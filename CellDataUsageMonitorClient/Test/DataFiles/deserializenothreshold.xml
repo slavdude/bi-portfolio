@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AfltHits>
+	  <Daily>-1</Daily>
+	  <Weekly>-1</Weekly>
+  </AfltHits>
+  <Agencies>AgencyABC</Agencies>
+  <DataUsage>
+	  <Daily>-1</Daily>
+	  <Weekly>-1</Weekly>
+  </DataUsage>
+  <Emails>me@email.com</Emails>
+  <PostalCodes>02134</PostalCodes>
+  <SerialIds>12</SerialIds>
+</UserConfiguration>

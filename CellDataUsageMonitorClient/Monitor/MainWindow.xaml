@@ -1,0 +1,96 @@
+﻿<Window x:Class="Monitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Data Usage Monitor" Height="595" Width="1264" WindowStartupLocation="CenterScreen" Initialized="WindowInitialized" Icon="/BI.CellDataUsageMonitor.Client;component/Images/BI.ico" xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended">
+    <Grid>
+		<Label Background="#FFBCC7D8" BorderBrush="Black" BorderThickness="2" Content="Cell Usage Data Service is Stopped" FontSize="14" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="24,12,0,513" Name="runStatus" Width="278" VerticalAlignment="Center" />
+		<Button Content="Start Service" Height="23" HorizontalAlignment="Left" Margin="431,20,0,0" Name="start" VerticalAlignment="Top" Width="109" Click="StartClick" />
+		<Button Content="Close" Height="23" HorizontalAlignment="Left" Margin="1138,521,0,0" Name="close" VerticalAlignment="Top" Width="75" Click="CloseClick" />
+		<GroupBox Header="Create/View Filters" Height="442" HorizontalAlignment="Left" Margin="24,61,0,0" Name="createViewFilters" VerticalAlignment="Top" Width="369">
+			<Grid>
+			<GroupBox Header="Device Serial Numbers" Height="121" Name="devices" Width="327" Margin="14,14,16,287">
+					<Grid>
+						<TextBox Height="23" HorizontalAlignment="Left" Margin="14,14,0,0" Name="serialIds" VerticalAlignment="Top" Width="287" Grid.ColumnSpan="2" />
+						<TextBlock Height="50" HorizontalAlignment="Left" Margin="14,46,0,0" Name="instructions" Text="Enter one or more serial numbers in the box above.  Separate individual values with commas (e.g. 1,2,4) and ranges with a dash (e.g. 1000-2000)." VerticalAlignment="Top" Width="285" TextWrapping="Wrap" />
+					</Grid>
+				</GroupBox>
+			<GroupBox Header="Geographic Filters" Height="267" HorizontalAlignment="Left" Margin="14,149,0,0" Name="geography" VerticalAlignment="Top" Width="327">
+					<Grid>
+						<ListBox Height="84" HorizontalAlignment="Left" Margin="14,37,0,0" Name="agencies" VerticalAlignment="Top" Width="273" SelectionMode="Multiple" SelectionChanged="AgenciesSelectionChanged"></ListBox>
+						<ListBox Height="71" HorizontalAlignment="Left" Margin="14,161,0,0" Name="postalCodes" VerticalAlignment="Top" Width="272" SelectionMode="Multiple"></ListBox>
+						<Label Content="Agency/Agencies" Height="28" HorizontalAlignment="Left" Margin="14,6,0,0" Name="agencyLabel" VerticalAlignment="Top" />
+						<Label Content="Postal Codes" Height="28" HorizontalAlignment="Left" Margin="14,127,0,0" Name="postalCodeLabel" VerticalAlignment="Top" />
+					</Grid>
+				</GroupBox>
+			</Grid>
+		</GroupBox>
+		<GroupBox Header="Create/View Alerts" Height="442" HorizontalAlignment="Left" Margin="431,61,0,0" Name="createViewAlerts" VerticalAlignment="Top" Width="268">
+			<Grid>
+				<Expander ExpandDirection="Down" Header="Email Alerts" Margin="10,10,15,228" Name="emailExpander" ToolTip="Expand this item to view or edit the list of emails to be sent alerts." Opacity="100" Background="White" Expanded="EmailExpanderExpanded" Collapsed="EmailExpanderCollapsed">
+					<ScrollViewer Height="93" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" Margin="0,0,0,0" Name="scrollViewer" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Width="247">
+						<TextBlock Height="96" HorizontalAlignment="Stretch" Margin="0,0,0,0" Name="emails" Text="Enter the email addresses of users who should receive alerts, separated by semicolons." TextWrapping="Wrap" VerticalAlignment="Stretch" Width="249" Background="White" Opacity="100" OpacityMask="White" FontStyle="Italic" Foreground="DarkGray" MouseDown="EmailsMouseDown" KeyDown="EmailsKeyDown" />
+					</ScrollViewer>
+				</Expander>
+				<GroupBox Header="Data Usage Thresholds (Bytes)" Height="99" HorizontalAlignment="Left" Margin="10,106,0,0" Name="dataUsageGroup" VerticalAlignment="Top" Width="237">
+					<Grid>
+						<TextBox Height="23" HorizontalAlignment="Left" Margin="14,6,0,0" Name="usagePerDay" VerticalAlignment="Top" Width="84" Text="" />
+						<TextBox Height="23" HorizontalAlignment="Left" Margin="14,51,0,0" Name="usagePerWeek" VerticalAlignment="Top" Width="84" Text="" />
+						<Label Content="Per Day" Height="28" HorizontalAlignment="Right" Margin="0,1,56,0" Name="perDayUsage" VerticalAlignment="Top" />
+						<Label Content="Per Week" Height="28" HorizontalAlignment="Left" Margin="121,46,0,0" Name="perWeekUsage" VerticalAlignment="Top" />
+					</Grid>
+				</GroupBox>
+				<GroupBox Header="AFLT Hit Thresholds" Height="100" HorizontalAlignment="Left" Margin="10,259,0,0" Name="afltHitGroup" VerticalAlignment="Top" Width="237">
+					<Grid>
+						<TextBox Height="23" HorizontalAlignment="Left" Margin="14,6,0,0" Name="hitsPerDay" VerticalAlignment="Top" Width="84" Text="" />
+						<TextBox Height="23" HorizontalAlignment="Left" Margin="14,51,0,0" Name="hitsPerWeek" VerticalAlignment="Top" Width="84" Text="" />
+						<Label Content="Per Day" Height="28" HorizontalAlignment="Right" Margin="0,4,56,0" Name="perDayHits" VerticalAlignment="Top" />
+						<Label Content="Per Week" Height="28" HorizontalAlignment="Left" Margin="121,46,0,0" Name="perWeekHits" VerticalAlignment="Top" />
+					</Grid>
+				</GroupBox>
+			</Grid>
+		</GroupBox>
+		<Button Content="Load Alert Configuration" Height="23" HorizontalAlignment="Left" Margin="30,521,0,0" Name="loadConfiguration" VerticalAlignment="Top" Width="145" Click="LoadConfigurationClick" IsEnabled="False" Visibility="Visible" />
+		<GroupBox Header="Statistics" Height="443" HorizontalAlignment="Left" Margin="732,60,0,0" Name="statistics" VerticalAlignment="Top" Width="481">
+			<Grid Width="460" Height="419">
+				<GroupBox Header="Date Range" Height="113" HorizontalAlignment="Left" Margin="23,11,0,0" Name="dateRange" VerticalAlignment="Top" Width="264">
+					<Grid Height="89">
+						<Label Content="Start" Height="28" HorizontalAlignment="Left" Margin="10,10,0,51" Name="from" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="40" />
+						<Label Content="End" Height="28" HorizontalAlignment="Left" Margin="15,0,0,7" Name="to" VerticalAlignment="Bottom" VerticalContentAlignment="Center" />
+						<DatePicker Height="25" HorizontalAlignment="Left" Margin="70,14,0,0" Name="startDate" VerticalAlignment="Top" Width="165" />
+						<DatePicker Height="25" HorizontalAlignment="Left" Margin="70,54,0,0" Name="endDate" VerticalAlignment="Top" Width="165" />
+					</Grid>
+				</GroupBox>
+				<GroupBox Header="Data Usage/AFLT Hits" Height="264" HorizontalAlignment="Left" Margin="23,138,0,0" Name="dataUsageAfltHits" VerticalAlignment="Top" Width="415">
+					<Grid Width="396">
+						<GroupBox Header="Measures" Height="82" HorizontalAlignment="Left" Margin="16,60,0,0" Name="measures" VerticalAlignment="Top" Width="366" Grid.ColumnSpan="2" IsEnabled="False">
+							<Grid>
+								<CheckBox Content="Average" Height="18" HorizontalAlignment="Left" Margin="10,10,0,0" Name="average" ToolTip="Get the average usage for the period." VerticalAlignment="Top" Checked="Checked" Unchecked="Unchecked" />
+								<CheckBox Content="Lowest" Height="16" HorizontalAlignment="Left" Margin="87,41,0,0" Name="lowest" ToolTip="Show the devices with the lowest usage in the period." VerticalAlignment="Top" Checked="Checked" Unchecked="Unchecked" />
+								<CheckBox Content="Highest" Height="16" HorizontalAlignment="Left" Margin="10,41,0,0" Name="highest" ToolTip="Show the devices with the highest usage in the period." VerticalAlignment="Top" Checked="Checked" Unchecked="Unchecked" />
+								<CheckBox Content="Standard Deviation" Height="18" HorizontalAlignment="Left" Margin="87,10,0,0" Name="standardDeviation" ToolTip="Get the items that fall within standard deviations of the average." VerticalAlignment="Top" VerticalContentAlignment="Top" Width="114" Checked="Checked" Unchecked="Unchecked" />
+								<CheckBox Checked="Checked" Content="Exceeds Threshold" Height="16" HorizontalAlignment="Left" Margin="213,10,0,0" Name="exceedThreshold" ToolTip="Show the devices exceeding user-defined thresholds." VerticalAlignment="Top" Unchecked="Unchecked" />
+							</Grid>
+						</GroupBox>
+						<GroupBox Header="Threshold" Height="82" HorizontalAlignment="Left" IsEnabled="False" Margin="16,148,0,0" Name="threshold" VerticalAlignment="Top" Width="366" Grid.ColumnSpan="2">
+							<Grid>
+								<Label Content="Data Usage (Bytes)" Height="28" HorizontalAlignment="Left" Margin="6,17,0,0" Name="usageLabel" VerticalAlignment="Top" Width="112" VerticalContentAlignment="Center" />
+								<Label Content="AFLT Hits" Height="28" HorizontalAlignment="Right" Margin="0,17,105,0" Name="afltLabel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+								<TextBox Height="23" HorizontalAlignment="Left" Margin="112,21,0,0" Name="usage" VerticalAlignment="Top" Width="76" VerticalContentAlignment="Center" TextChanged="TextChanged" />
+								<TextBox Height="23" HorizontalAlignment="Left" Margin="264,21,0,0" Name="hits" VerticalAlignment="Top" Width="72" VerticalContentAlignment="Center" TextChanged="TextChanged" />
+							</Grid>
+						</GroupBox>
+						<Label Content="Period" Height="28" HorizontalAlignment="Left" Margin="255,10,0,0" Name="periodLabel" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+						<ComboBox Height="23" HorizontalAlignment="Center" Margin="301,13,14,209" Name="period" VerticalAlignment="Center" Width="81" SelectionChanged="PeriodSelectionChanged" IsEnabled="False">
+							<ComboBoxItem Content="Day" />
+							<ComboBoxItem Content="Week" />
+							<ComboBoxItem Content="Month" />
+						</ComboBox>
+						<CheckBox Content="Data Usage (Bytes)" Height="16" HorizontalAlignment="Left" Margin="22,18,0,0" Name="dataUsage" VerticalAlignment="Top" Checked="Checked" Unchecked="Unchecked" />
+						<CheckBox Content="AFLT Hits" Height="16" HorizontalAlignment="Left" Margin="149,18,0,0" Name="afltHits" VerticalAlignment="Top" Checked="Checked" Unchecked="Unchecked" />
+					</Grid>
+				</GroupBox>
+				<Button Content="Generate Statistics" Height="23" HorizontalAlignment="Left" Margin="320,67,0,0" Name="generateStatistics" VerticalAlignment="Top" Width="109" Click="GenerateStatisticsClick" IsEnabled="False" />
+			</Grid>
+		</GroupBox>
+	</Grid>
+</Window>
